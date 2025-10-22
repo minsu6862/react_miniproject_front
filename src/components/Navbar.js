@@ -7,7 +7,7 @@ const Navbar = ({ user, onLogout }) => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <h1>대학생 커뮤니티</h1>
+          <h1>학사</h1>
         </Link>
         <div className="navbar-menu">
           {user ? (
