@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8889",
-  withCredentials: true, // 세션 쿠키 전송
+  baseURL: "", // 같은 서버이므로 빈 문자열 또는 생략
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -13,8 +13,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // 세션이 만료되었거나 로그인이 필요한 경우
       localStorage.removeItem("username");
+      localStorage.removeItem("nickname");
       if (
         window.location.pathname !== "/login" &&
         window.location.pathname !== "/signup"
