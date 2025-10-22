@@ -12,13 +12,22 @@ import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const checkUser = async () => {
     try {
       const res = await api.get("/api/auth/me");
-      setUser(res.data.username);
-    } catch {
+      // 닉네임을 user로 설정
+      setUser(res.data.nickname); // username → nickname으로 변경
+      localStorage.setItem("username", res.data.username);
+      localStorage.setItem("nickname", res.data.nickname);
+    } catch (err) {
+      console.log("로그인되지 않음");
       setUser(null);
+      localStorage.removeItem("username");
+      localStorage.removeItem("nickname");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -29,11 +38,17 @@ function App() {
   const handleLogout = async () => {
     try {
       await api.post("/api/auth/logout");
-      setUser(null);
     } catch (err) {
       console.error("로그아웃 실패:", err);
+    } finally {
+      localStorage.removeItem("username");
+      setUser(null);
     }
   };
+
+  if (loading) {
+    return <div>로딩중...</div>;
+  }
 
   return (
     <Router>

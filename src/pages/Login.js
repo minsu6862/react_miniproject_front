@@ -24,6 +24,10 @@ const Login = ({ onLogin }) => {
 
     try {
       const res = await api.post("/api/auth/login", formData);
+
+      // username를 localStorage에 저장 (UI 표시용)
+      localStorage.setItem("username", res.data.username);
+
       onLogin(res.data.username);
       navigate("/");
     } catch (err) {
